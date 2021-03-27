@@ -1,0 +1,22 @@
+{
+  "name": "reinis/person-registry",
+  "description": "Person registry",
+  "authors": [
+    {
+      "name": "Reinis Danne",
+      "email": "rei4dan@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "PersonRegistry\\": "app/"
+    }
+  },
+  "require-dev": {
+    "roave/security-advisories": "dev-latest",
+    "phpunit/phpunit": "^9"
+  },
+  "require": {
+    "nikic/fast-route": "^1.3"
+  }
+}
