@@ -6,28 +6,43 @@ use InvalidArgumentException;
 
 class Person
 {
+    private int $id = 0;
     private string $firstName;
     private string $lastName;
     private string $nationalId;
     private string $notes;
 
-    public function __construct(string $firstName, string $lastName, string $nationalId, string $notes = '')
+    public function __construct(string $firstName = 'Fnu', string $lastName = 'Lnu', string $nationalId = '', string $notes = '')
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        $this->setNationalId($nationalId);
+        if ($nationalId !== '') {
+            $this->setNationalId($nationalId);
+        }
         $this->notes = $notes;
     }
 
     private function setNationalId(string $nationalId): void
     {
+        $this->validateNationalId($nationalId);
+
+        $this->nationalId = $nationalId;
+    }
+
+    private function validateNationalId(string $nationalId): void
+    {
         $match = preg_match('/^\d{6}[-]?\d{5}$/', $nationalId);
 
         if (0 === $match || false === $match) {
-            throw new InvalidArgumentException("Invalid National Identification Number");
+            throw new InvalidArgumentException("Invalid National Identification Number: {$nationalId}");
         }
+    }
 
-        $this->nationalId = $nationalId;
+    public function getNationalId(): string
+    {
+        $this->validateNationalId($this->nationalId);
+
+        return $this->nationalId;
     }
 
     public function getName(): string
@@ -45,11 +60,6 @@ class Person
         return $this->lastName;
     }
 
-    public function getNationalId(): string
-    {
-        return $this->nationalId;
-    }
-
     public function getNotes(): string
     {
         return $this->notes;
@@ -58,5 +68,10 @@ class Person
     public function setNotes(string $notes): void
     {
         $this->notes = $notes;
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 }
