@@ -24,12 +24,12 @@ class Person
 
     private function setNationalId(string $nationalId): void
     {
-        $this->validateNationalId($nationalId);
+        self::validateNationalId($nationalId);
 
         $this->nationalId = $nationalId;
     }
 
-    private function validateNationalId(string $nationalId): void
+    private static function validateNationalId(string $nationalId): void
     {
         $match = preg_match('/^\d{6}[-]?\d{5}$/', $nationalId);
 
@@ -38,9 +38,20 @@ class Person
         }
     }
 
+    public static function isValidNationalId(string $nationalId): bool
+    {
+        try {
+            self::validateNationalId($nationalId);
+        } catch (InvalidArgumentException $exception) {
+            return false;
+        }
+
+        return true;
+    }
+
     public function getNationalId(): string
     {
-        $this->validateNationalId($this->nationalId);
+        self::validateNationalId($this->nationalId);
 
         return $this->nationalId;
     }
