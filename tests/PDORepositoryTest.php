@@ -95,6 +95,20 @@ class PDORepositoryTest extends TestCase
      * @depends testCreatePerson
      * @param Person $person
      */
+    public function testGetPersonById(Person $person): void
+    {
+        $retrievedPerson = $this->dataService->getPersonById($person->getId());
+
+        self::assertEquals($person->getNationalId(), $retrievedPerson->getNationalId());
+        self::assertEquals($person->getFirstName(), $retrievedPerson->getFirstName());
+        self::assertEquals($person->getLastName(), $retrievedPerson->getLastName());
+        self::assertEquals($person->getNotes(), $retrievedPerson->getNotes());
+    }
+
+    /**
+     * @depends testCreatePerson
+     * @param Person $person
+     */
     public function testGetPersonByNId(Person $person): void
     {
         $retrievedPerson = $this->dataService->getPersonByNId($person->getNationalId());
@@ -103,6 +117,18 @@ class PDORepositoryTest extends TestCase
         self::assertEquals($person->getFirstName(), $retrievedPerson->getFirstName());
         self::assertEquals($person->getLastName(), $retrievedPerson->getLastName());
         self::assertEquals($person->getNotes(), $retrievedPerson->getNotes());
+    }
+
+    /**
+     * @depends testCreatePerson
+     * @param Person $person
+     */
+    public function testGetPeople(Person $person): void
+    {
+        $people = $this->dataService->getPeople();
+
+        self::assertTrue($people->hasPerson($person->getNationalId()));
+        self::assertCount(1, $people);
     }
 
     /**

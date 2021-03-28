@@ -5,6 +5,7 @@ namespace PersonRegistry\Repositories;
 use InvalidArgumentException;
 use PDO;
 use PDOException;
+use PersonRegistry\Entities\Collections\People;
 use PersonRegistry\Entities\Person;
 
 class PDORepository implements DataRepositoryInterface
@@ -46,6 +47,14 @@ class PDORepository implements DataRepositoryInterface
         }
 
         return $person;
+    }
+
+    public function getPersonById(int $id): Person
+    {
+        $sql = "select * from `people` where id = ?;";
+        $errorMessage = "Person with ID '{$id}' not found";
+
+        return $this->run($sql, $errorMessage, $id);
     }
 
     public function getPersonByNId(string $nationalId): Person
@@ -90,5 +99,20 @@ class PDORepository implements DataRepositoryInterface
         $sql = "delete from `people` where nationalId = ?;";
         $statement = $this->connection->prepare($sql);
         $statement->execute([$person->getNationalId()]);
+    }
+
+    public function getPeople(): People
+    {
+        $sql = "select * from `people`;";
+        $statement = $this->connection->prepare($sql);
+        $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Person::class);
+        $statement->execute();
+        $peopleList = $statement->fetchAll();
+
+        if ($peopleList === false) {
+            throw new InvalidArgumentException("No people found in the database");
+        }
+
+        return new People(...$peopleList);
     }
 }
