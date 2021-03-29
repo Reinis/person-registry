@@ -2,17 +2,14 @@
 
 namespace PersonRegistryTest;
 
-use Dotenv\Dotenv;
 use InvalidArgumentException;
+use PersonRegistry\Config;
 use PersonRegistry\Entities\Person;
 use PersonRegistry\Repositories\PDORepository;
 use PHPUnit\Framework\TestCase;
 
 class PDORepositoryTest extends TestCase
 {
-    private const DB_DSN_VAR = 'PERSON_REGISTRY_DB_DSN_TEST';
-    private const DB_USER_VAR = 'PERSON_REGISTRY_DB_USER_TEST';
-    private const DB_PASSWORD_VAR = 'PERSON_REGISTRY_DB_PASSWORD_TEST';
 
     private PDORepository $dataService;
 
@@ -20,15 +17,7 @@ class PDORepositoryTest extends TestCase
     {
         parent::__construct($name, $data, $dataName);
 
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
-        $dotenv->required([self::DB_DSN_VAR, self::DB_USER_VAR, self::DB_PASSWORD_VAR]);
-
-        $dsn = $_ENV[self::DB_DSN_VAR];
-        $user = $_ENV[self::DB_USER_VAR];
-        $pass = $_ENV[self::DB_PASSWORD_VAR];
-
-        $this->dataService = new PDORepository($dsn, $user, $pass);
+        $this->dataService = new PDORepository(new Config(true));
     }
 
     public function testCreatePerson(): Person

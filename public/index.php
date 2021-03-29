@@ -4,25 +4,20 @@ declare(strict_types=1);
 
 require_once '../vendor/autoload.php';
 
-use Dotenv\Dotenv;
+use League\Container\Container;
+use PersonRegistry\Config;
 use PersonRegistry\Controllers\HomeController;
+use PersonRegistry\Repositories\PersonRepository;
 use PersonRegistry\Repositories\PDORepository;
 
 
-const DB_DSN = 'PERSON_REGISTRY_DB_DSN';
-const DB_USER = 'PERSON_REGISTRY_DB_USER';
-const DB_PASSWORD = 'PERSON_REGISTRY_DB_PASSWORD';
+$container = new Container();
 
-
-$dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-$dotenv->load();
-$dotenv->required([DB_DSN, DB_USER, DB_PASSWORD]);
-
-$dsn = $_ENV[DB_DSN];
-$user = $_ENV[DB_USER];
-$pass = $_ENV[DB_PASSWORD];
-
-$repository = new PDORepository($dsn, $user, $pass);
+$container->add(Config::class, Config::class);
+$container->add(PersonRepository::class, PDORepository::class)
+    ->addArgument(Config::class);
+$container->add(HomeController::class, HomeController::class)
+    ->addArgument(PersonRepository::class);
 
 
 $dispatcher = FastRoute\simpleDispatcher(
@@ -57,7 +52,6 @@ switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::FOUND:
         [$class, $method] = $routeInfo[1];
         $vars = $routeInfo[2];
-        $handler = new $class($repository);
-        $handler->$method($vars);
+        $container->get($class)->$method($vars);
         break;
 }

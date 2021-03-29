@@ -3,13 +3,13 @@
 namespace PersonRegistry\Controllers;
 
 use PersonRegistry\Entities\Person;
-use PersonRegistry\Repositories\DataRepositoryInterface;
+use PersonRegistry\Repositories\PersonRepository;
 
 class HomeController
 {
-    private DataRepositoryInterface $repository;
+    private PersonRepository $repository;
 
-    public function __construct(DataRepositoryInterface $repository)
+    public function __construct(PersonRepository $repository)
     {
         $this->repository = $repository;
     }

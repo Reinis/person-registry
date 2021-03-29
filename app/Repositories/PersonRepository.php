@@ -5,7 +5,7 @@ namespace PersonRegistry\Repositories;
 use PersonRegistry\Entities\Collections\People;
 use PersonRegistry\Entities\Person;
 
-interface DataRepositoryInterface
+interface PersonRepository
 {
     public function getPersonByName(string $firstName, string $lastName): Person;
 

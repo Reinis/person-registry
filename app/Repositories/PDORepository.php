@@ -5,14 +5,15 @@ namespace PersonRegistry\Repositories;
 use InvalidArgumentException;
 use PDO;
 use PDOException;
+use PersonRegistry\Config;
 use PersonRegistry\Entities\Collections\People;
 use PersonRegistry\Entities\Person;
 
-class PDORepository implements DataRepositoryInterface
+class PDORepository implements PersonRepository
 {
     private PDO $connection;
 
-    public function __construct(string $connectionString, string $user, string $password)
+    public function __construct(Config $config)
     {
         $options = [
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -21,7 +22,12 @@ class PDORepository implements DataRepositoryInterface
         ];
 
         try {
-            $this->connection = new PDO($connectionString, $user, $password, $options);
+            $this->connection = new PDO(
+                $config->getDsn(),
+                $config->getDBUsername(),
+                $config->getDBPassword(),
+                $options
+            );
         } catch (PDOException $e) {
             throw new PDOException($e->getMessage(), (int)$e->getCode());
         }
