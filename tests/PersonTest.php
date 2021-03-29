@@ -10,27 +10,20 @@ class PersonTest extends TestCase
 {
     public function testName(): void
     {
-        $name = "John";
-        $surname = "Doe";
-        $nid = "123456-12345";
-        $person = new Person($name, $surname, $nid);
+        $person = new Person("John", "Doe", "123456-12345");
 
-        self::assertEquals($name, $person->getFirstName());
-        self::assertEquals($surname, $person->getLastName());
-        self::assertEquals("{$name} {$surname}", $person->getName());
+        self::assertEquals("John", $person->getFirstName());
+        self::assertEquals("Doe", $person->getLastName());
+        self::assertEquals("John Doe", $person->getName());
     }
 
     public function testNID(): void
     {
-        $name = "John";
-        $surname = "Doe";
-        $nid1 = "123456-12345";
-        $nid2 = "12345612345";
-        $person1 = new Person($name, $surname, $nid1);
-        $person2 = new Person($name, $surname, $nid2);
+        $person1 = new Person("John", "Doe", "123456-12345");
+        $person2 = new Person("John", "Doe", "12345612345");
 
-        self::assertEquals($nid1, $person1->getNationalId());
-        self::assertEquals($nid2, $person2->getNationalId());
+        self::assertEquals("123456-12345", $person1->getNationalId());
+        self::assertEquals("12345612345", $person2->getNationalId());
     }
 
     public function testInvalidNID(): void
@@ -38,19 +31,12 @@ class PersonTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage("Invalid National Identification Number");
 
-        $name = "John";
-        $surname = "Doe";
-        $nid = "123456 12345";
-
-        new Person($name, $surname, $nid);
+        new Person("John", "Doe", "123456 12345");
     }
 
     public function testNotesEmpty(): Person
     {
-        $name = "John";
-        $surname = "Doe";
-        $nid = "123456-12345";
-        $person = new Person($name, $surname, $nid);
+        $person = new Person("John", "Doe", "123456-12345");
 
         self::assertEmpty($person->getNotes());
 
@@ -63,9 +49,22 @@ class PersonTest extends TestCase
      */
     public function testSetNotes(Person $person): void
     {
-        $notes = "This is a note text.";
-        $person->setNotes($notes);
+        $person->setNotes("This is a note text.");
 
-        self::assertEquals($notes, $person->getNotes());
+        self::assertEquals("This is a note text.", $person->getNotes());
+        self::assertNotEquals("This is another note.", $person->getNotes());
+    }
+
+    /**
+     * @depends testNotesEmpty
+     * @param Person $person
+     */
+    public function testSetId(Person $person): void
+    {
+        self::assertEquals(0, $person->getId());
+
+        $person->setId(17);
+
+        self::assertEquals(17, $person->getId());
     }
 }

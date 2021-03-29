@@ -22,20 +22,15 @@ class PDORepositoryTest extends TestCase
 
     public function testCreatePerson(): Person
     {
-        $firstName = 'Jane';
-        $lastName = 'Doe';
-        $nationalId = '123456-12346';
-        $notes = '';
-
-        $person = new Person($firstName, $lastName, $nationalId, $notes);
+        $person = new Person('Jane', 'Doe', '123456-12346', 'note');
         $this->dataService->createPerson($person);
-        $retrievedPerson = $this->dataService->getPersonByName($firstName, $lastName);
+        $retrievedPerson = $this->dataService->getPersonByName('Jane', 'Doe');
 
         self::assertNotEquals(0, $retrievedPerson->getId());
-        self::assertEquals($firstName, $retrievedPerson->getFirstName());
-        self::assertEquals($lastName, $retrievedPerson->getLastName());
-        self::assertEquals($nationalId, $retrievedPerson->getNationalId());
-        self::assertEquals($notes, $retrievedPerson->getNotes());
+        self::assertEquals('Jane', $retrievedPerson->getFirstName());
+        self::assertEquals('Doe', $retrievedPerson->getLastName());
+        self::assertEquals('123456-12346', $retrievedPerson->getNationalId());
+        self::assertEquals('note', $retrievedPerson->getNotes());
 
         return $retrievedPerson;
     }
