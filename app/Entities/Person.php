@@ -12,13 +12,11 @@ class Person
     private string $nationalId;
     private string $notes;
 
-    public function __construct(string $firstName = 'Fnu', string $lastName = 'Lnu', string $nationalId = '', string $notes = '')
+    public function __construct(string $firstName, string $lastName, string $nationalId, string $notes = '')
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
-        if ($nationalId !== '') {
-            $this->setNationalId($nationalId);
-        }
+        $this->setNationalId($nationalId);
         $this->notes = $notes;
     }
 
@@ -51,8 +49,6 @@ class Person
 
     public function getNationalId(): string
     {
-        self::validateNationalId($this->nationalId);
-
         return $this->nationalId;
     }
 

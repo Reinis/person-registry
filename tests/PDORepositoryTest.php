@@ -48,7 +48,6 @@ class PDORepositoryTest extends TestCase
 
         self::assertEquals($firstName, $person->getFirstName());
         self::assertEquals($lastName, $person->getLastName());
-        $person->getNationalId();
 
         return $person;
     }

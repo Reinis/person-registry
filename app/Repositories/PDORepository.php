@@ -44,13 +44,21 @@ class PDORepository implements PersonRepository
     private function run(string $sql, string $errorMessage, string ...$args): Person
     {
         $statement = $this->connection->prepare($sql);
-        $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Person::class);
+        $statement->setFetchMode(PDO::FETCH_OBJ);
         $statement->execute($args);
-        $person = $statement->fetch();
+        $result = $statement->fetch();
 
-        if ($person === false) {
+        if ($result === false) {
             throw new InvalidArgumentException($errorMessage);
         }
+
+        return $this->getPersonInstance($result);
+    }
+
+    private function getPersonInstance(object $result): Person
+    {
+        $person = new Person($result->firstName, $result->lastName, $result->nationalId, $result->notes);
+        $person->setId($result->id);
 
         return $person;
     }
@@ -111,12 +119,17 @@ class PDORepository implements PersonRepository
     {
         $sql = "select * from `people`;";
         $statement = $this->connection->prepare($sql);
-        $statement->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, Person::class);
+        $statement->setFetchMode(PDO::FETCH_OBJ);
         $statement->execute();
-        $peopleList = $statement->fetchAll();
+        $result = $statement->fetchAll();
 
-        if ($peopleList === false) {
+        if ($result === false) {
             throw new InvalidArgumentException("No people found in the database");
+        }
+
+        $peopleList = [];
+        foreach ($result as $item) {
+            $peopleList[] = $this->getPersonInstance($item);
         }
 
         return new People(...$peopleList);
