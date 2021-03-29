@@ -23,7 +23,7 @@ class PersonTest extends TestCase
         $person2 = new Person("John", "Doe", "12345612345");
 
         self::assertEquals("123456-12345", $person1->getNationalId());
-        self::assertEquals("12345612345", $person2->getNationalId());
+        self::assertEquals("123456-12345", $person2->getNationalId());
     }
 
     public function testInvalidNID(): void
@@ -66,5 +66,20 @@ class PersonTest extends TestCase
         $person->setId(17);
 
         self::assertEquals(17, $person->getId());
+    }
+
+    public function testIsValidNationalId(): void
+    {
+        self::assertTrue(Person::isValidNationalId('123456-12345'));
+        self::assertTrue(Person::isValidNationalId('12345612345'));
+        self::assertTrue(Person::isValidNationalId('111111-54321'));
+
+        self::assertFalse(Person::isValidNationalId(''));
+        self::assertFalse(Person::isValidNationalId('abcdef-ghijk'));
+        self::assertFalse(Person::isValidNationalId('abcdefghijk'));
+        self::assertFalse(Person::isValidNationalId('12345-12345'));
+        self::assertFalse(Person::isValidNationalId('123456'));
+        self::assertFalse(Person::isValidNationalId('123456_12345'));
+        self::assertFalse(Person::isValidNationalId('123456-12345a'));
     }
 }

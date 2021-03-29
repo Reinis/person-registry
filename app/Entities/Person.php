@@ -24,6 +24,9 @@ class Person
     {
         self::validateNationalId($nationalId);
 
+        // Normalize
+        $nationalId = (string)preg_replace('/^(\d{6})[-]?(\d{5})$/', '$1-$2', $nationalId);
+
         $this->nationalId = $nationalId;
     }
 
