@@ -116,6 +116,50 @@ class PDORepositoryTest extends TestCase
 
     /**
      * @depends testCreatePerson
+     */
+    public function testSearchPersonByName(): void
+    {
+        $people = $this->dataService->searchByName("Jane");
+
+        self::assertCount(1, $people);
+        self::assertTrue($people->hasPerson('123456-12346'));
+    }
+
+    /**
+     * @depends testCreatePerson
+     */
+    public function testSearchPersonByNID(): void
+    {
+        $people = $this->dataService->searchByNID("46");
+
+        self::assertCount(1, $people);
+        self::assertTrue($people->hasPerson('123456-12346'));
+    }
+
+    /**
+     * @depends testCreatePerson
+     */
+    public function testSearchPersonByNotes(): void
+    {
+        $people = $this->dataService->searchByNotes("no");
+
+        self::assertCount(1, $people);
+        self::assertTrue($people->hasPerson('123456-12346'));
+    }
+
+    /**
+     * @depends testCreatePerson
+     */
+    public function testSearchPersonByAll(): void
+    {
+        $people = $this->dataService->searchByAll("46 no");
+
+        self::assertCount(1, $people);
+        self::assertTrue($people->hasPerson('123456-12346'));
+    }
+
+    /**
+     * @depends testCreatePerson
      * @param Person $person
      */
     public function testDeletePerson(Person $person): void

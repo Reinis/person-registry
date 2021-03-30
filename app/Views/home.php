@@ -1,6 +1,19 @@
 <h1>Person Registry</h1>
 <hr>
 <div>
+    <div class="input-group">
+        <?php $searchField = $searchField ?? 'name' ?>
+        <form action="/search" method="post">
+            <select name="searchField">
+                <option value="name" <?php if ($searchField === 'name') echo 'selected'; ?>>Name</option>
+                <option value="nid" <?php if ($searchField === 'nid') echo 'selected'; ?>>National Id</option>
+                <option value="notes" <?php if ($searchField === 'notes') echo 'selected'; ?>>Notes</option>
+                <option value="all" <?php if ($searchField === 'all') echo 'selected'; ?>>All</option>
+            </select>
+            <input type="search" name="searchTerm" placeholder="Search">
+            <input type="submit" name="search" value="Search">
+        </form>
+    </div>
     <a href="/add">
         <button>Add New</button>
     </a>

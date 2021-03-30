@@ -20,4 +20,12 @@ interface PersonRepository
     public function deletePerson(Person $person): void;
 
     public function getPeople(): People;
+
+    public function searchByName(string $searchTerm): People;
+
+    public function searchByNID(string $searchTerm): People;
+
+    public function searchByNotes(string $searchTerm): People;
+
+    public function searchByAll(string $searchTerm): People;
 }

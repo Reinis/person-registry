@@ -3,20 +3,20 @@
 namespace PersonRegistry\Controllers;
 
 use PersonRegistry\Entities\Person;
-use PersonRegistry\Repositories\PersonRepository;
+use PersonRegistry\Services\PersonService;
 
 class HomeController
 {
-    private PersonRepository $repository;
+    private PersonService $service;
 
-    public function __construct(PersonRepository $repository)
+    public function __construct(PersonService $service)
     {
-        $this->repository = $repository;
+        $this->service = $service;
     }
 
     public function index(): void
     {
-        $people = $this->repository->getPeople();
+        $people = $this->service->getPeople();
 
         $this->header("Person Registry");
         require_once __DIR__ . '/../Views/home.php';
@@ -35,7 +35,7 @@ class HomeController
 
     public function edit(array $vars): void
     {
-        $person = $this->repository->getPersonById($vars['id']);
+        $person = $this->service->getPersonById($vars['id']);
 
         $this->header("Edit");
         require_once __DIR__ . '/../Views/edit.php';
@@ -44,11 +44,11 @@ class HomeController
 
     public function update(array $vars): void
     {
-        $person = $this->repository->getPersonById($vars['id']);
+        $person = $this->service->getPersonById($vars['id']);
         $notes = $_POST['notes'] ?? '';
         $person->setNotes($notes);
 
-        $this->repository->updatePerson($person);
+        $this->service->updatePerson($person);
 
         header('Location: /');
     }
@@ -75,16 +75,39 @@ class HomeController
         }
 
         $person = new Person($firstName, $lastName, $nationalId, $notes);
-        $this->repository->createPerson($person);
+        $this->service->createPerson($person);
 
         header('Location: /');
     }
 
     public function delete(array $args): void
     {
-        $person = $this->repository->getPersonById($args['id']);
-        $this->repository->deletePerson($person);
+        $person = $this->service->getPersonById($args['id']);
+        $this->service->deletePerson($person);
 
         header('Location: /');
+    }
+
+    public function search(): void
+    {
+        $searchField = $_POST['searchField'] ?? 'name';
+        $searchTerm = $_POST['searchTerm'] ?? '';
+
+        if ($searchTerm === '') {
+            header('Location: /');
+        }
+
+        if (!in_array($searchField, ['name', 'nid', 'notes', 'all'])) {
+            $this->header("Invalid search field");
+            require_once __DIR__ . '/../Views/error.php';
+            $this->footer();
+            die();
+        }
+
+        $people = $this->service->searchForPeople($searchField, $searchTerm);
+
+        $this->header("Person Registry");
+        require_once __DIR__ . '/../Views/home.php';
+        $this->footer();
     }
 }

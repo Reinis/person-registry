@@ -9,6 +9,7 @@ use PersonRegistry\Config;
 use PersonRegistry\Controllers\HomeController;
 use PersonRegistry\Repositories\PersonRepository;
 use PersonRegistry\Repositories\PDORepository;
+use PersonRegistry\Services\PersonService;
 
 
 $container = new Container();
@@ -16,18 +17,25 @@ $container = new Container();
 $container->add(Config::class, Config::class);
 $container->add(PersonRepository::class, PDORepository::class)
     ->addArgument(Config::class);
-$container->add(HomeController::class, HomeController::class)
+$container->add(PersonService::class, PersonService::class)
     ->addArgument(PersonRepository::class);
+$container->add(HomeController::class, HomeController::class)
+    ->addArgument(PersonService::class);
 
 
 $dispatcher = FastRoute\simpleDispatcher(
     function (FastRoute\RouteCollector $r) {
         $r->addRoute(['GET', 'POST'], '/', [HomeController::class, 'index']);
+
         $r->addRoute('GET', '/edit/{id:\d+}', [HomeController::class, 'edit']);
         $r->addRoute('POST', '/edit/{id:\d+}', [HomeController::class, 'update']);
+
         $r->addRoute('GET', '/add', [HomeController::class, 'addNew']);
         $r->addRoute('POST', '/add', [HomeController::class, 'create']);
+
         $r->addRoute('POST', '/delete/{id:\d+}', [HomeController::class, 'delete']);
+
+        $r->addRoute(['GET', 'POST'], '/search', [HomeController::class, 'search']);
     }
 );
 

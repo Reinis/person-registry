@@ -134,4 +134,57 @@ class PDORepository implements PersonRepository
 
         return new People(...$peopleList);
     }
+
+    public function searchByName(string $searchTerm): People
+    {
+        $searchTerm = "%{$searchTerm}%";
+        $sql = "select * from `people` where concat(firstName, ' ', lastName) like ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
+
+    private function searchForPeople(string $sql, string $searchTerm): People
+    {
+        $statement = $this->connection->prepare($sql);
+        $statement->setFetchMode(PDO::FETCH_OBJ);
+        $statement->execute([$searchTerm]);
+        $result = $statement->fetchAll();
+
+        if ($result === false) {
+            throw new InvalidArgumentException("Error searching for people in the database");
+        }
+
+        $people = new People();
+        foreach ($result as $item) {
+            $person = new Person($item->firstName, $item->lastName, $item->nationalId, $item->notes);
+            $person->setId($item->id);
+            $people->addPerson($person);
+        }
+
+        return $people;
+    }
+
+    public function searchByNID(string $searchTerm): People
+    {
+        $searchTerm = "%{$searchTerm}%";
+        $sql = "select * from `people` where nationalId like ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
+
+    public function searchByNotes(string $searchTerm): People
+    {
+        $searchTerm = "%{$searchTerm}%";
+        $sql = "select * from `people` where notes like ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
+
+    public function searchByAll(string $searchTerm): People
+    {
+        $searchTerm = "%{$searchTerm}%";
+        $sql = "select * from `people` where concat(firstName, ' ', lastName, ' ', nationalId, ' ', notes) like ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
 }
