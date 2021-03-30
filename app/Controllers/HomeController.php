@@ -16,30 +16,18 @@ class HomeController
 
     public function index(): void
     {
+        $title = "Person Registry";
         $people = $this->service->getPeople();
 
-        $this->header("Person Registry");
         require_once __DIR__ . '/../Views/home.php';
-        $this->footer();
-    }
-
-    public function header(string $title): void
-    {
-        require_once __DIR__ . '/../Views/header.php';
-    }
-
-    public function footer(): void
-    {
-        require_once __DIR__ . '/../Views/footer.php';
     }
 
     public function edit(array $vars): void
     {
+        $title = "Edit";
         $person = $this->service->getPersonById($vars['id']);
 
-        $this->header("Edit");
         require_once __DIR__ . '/../Views/edit.php';
-        $this->footer();
     }
 
     public function update(array $vars): void
@@ -55,9 +43,9 @@ class HomeController
 
     public function addNew(): void
     {
-        $this->header("Add New");
+        $title = "Add New";
+
         require_once __DIR__ . '/../Views/add.php';
-        $this->footer();
     }
 
     public function create(array $vars): void
@@ -68,9 +56,8 @@ class HomeController
         $notes = $_POST['notes'] ?? '';
 
         if (!Person::isValidNationalId($nationalId)) {
-            $this->header("Invalid person data");
+            $title = "Invalid person data";
             require_once __DIR__ . '/../Views/error.php';
-            $this->footer();
             die();
         }
 
@@ -98,16 +85,14 @@ class HomeController
         }
 
         if (!in_array($searchField, ['name', 'nid', 'notes', 'all'])) {
-            $this->header("Invalid search field");
+            $title = "Invalid search field";
             require_once __DIR__ . '/../Views/error.php';
-            $this->footer();
             die();
         }
 
+        $title = "Person Registry";
         $people = $this->service->searchForPeople($searchField, $searchTerm);
 
-        $this->header("Person Registry");
         require_once __DIR__ . '/../Views/home.php';
-        $this->footer();
     }
 }

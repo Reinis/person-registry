@@ -1,3 +1,4 @@
+<?php require_once __DIR__ . '/header.php'; ?>
 <div>
     <form action="/add" method="post">
         <label for="fist_name">First Name:</label>
@@ -18,3 +19,4 @@
         </div>
     </form>
 </div>
+<?php require_once __DIR__ . '/footer.php'; ?>
