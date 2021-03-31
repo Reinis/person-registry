@@ -57,7 +57,14 @@ class PDORepository implements PersonRepository
 
     private function getPersonInstance(object $result): Person
     {
-        $person = new Person($result->firstName, $result->lastName, $result->nationalId, $result->notes);
+        $person = new Person(
+            $result->firstName,
+            $result->lastName,
+            $result->nationalId,
+            $result->age,
+            $result->address,
+            $result->notes,
+        );
         $person->setId($result->id);
 
         return $person;
@@ -81,13 +88,15 @@ class PDORepository implements PersonRepository
 
     public function updatePerson(Person $person): void
     {
-        $sql = "update `people` set firstName = ?, lastName = ?, nationalId = ?, notes = ? where nationalId = ?";
+        $sql = "update `people` set firstName = ?, lastName = ?, nationalId = ?, age = ?, address = ?, notes = ? where nationalId = ?";
         $statement = $this->connection->prepare($sql);
         $statement->execute(
             [
                 $person->getFirstName(),
                 $person->getLastName(),
                 $person->getNationalId(),
+                $person->getAge(),
+                $person->getAddress(),
                 $person->getNotes(),
                 $person->getNationalId(),
             ]
@@ -96,13 +105,15 @@ class PDORepository implements PersonRepository
 
     public function createPerson(Person $person): void
     {
-        $sql = "insert into `people` (firstName, lastName, nationalId, notes) values (?, ?, ?, ?);";
+        $sql = "insert into `people` (firstName, lastName, nationalId, age, address, notes) values (?, ?, ?, ?, ?, ?);";
         $statement = $this->connection->prepare($sql);
         $statement->execute(
             [
                 $person->getFirstName(),
                 $person->getLastName(),
                 $person->getNationalId(),
+                $person->getAge(),
+                $person->getAddress(),
                 $person->getNotes(),
             ]
         );
@@ -156,7 +167,14 @@ class PDORepository implements PersonRepository
 
         $people = new People();
         foreach ($result as $item) {
-            $person = new Person($item->firstName, $item->lastName, $item->nationalId, $item->notes);
+            $person = new Person(
+                $item->firstName,
+                $item->lastName,
+                $item->nationalId,
+                $item->age,
+                $item->address,
+                $item->notes,
+            );
             $person->setId($item->id);
             $people->addPerson($person);
         }
@@ -183,7 +201,7 @@ class PDORepository implements PersonRepository
     public function searchByAll(string $searchTerm): People
     {
         $searchTerm = "%{$searchTerm}%";
-        $sql = "select * from `people` where concat(firstName, ' ', lastName, ' ', nationalId, ' ', notes) like ?;";
+        $sql = "select * from `people` where concat(firstName, ' ', lastName, ' ', nationalId, ' ', age, ' ', address, ' ', notes) like ?;";
 
         return $this->searchForPeople($sql, $searchTerm);
     }

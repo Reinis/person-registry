@@ -10,13 +10,17 @@ class Person
     private string $firstName;
     private string $lastName;
     private string $nationalId;
+    private int $age;
+    private string $address;
     private string $notes;
 
-    public function __construct(string $firstName, string $lastName, string $nationalId, string $notes = '')
+    public function __construct(string $firstName, string $lastName, string $nationalId, int $age = 0, string $address = '', string $notes = '')
     {
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->setNationalId($nationalId);
+        $this->age = $age;
+        $this->address = $address;
         $this->notes = $notes;
     }
 
@@ -48,6 +52,26 @@ class Person
         }
 
         return true;
+    }
+
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function setAge(int $age): void
+    {
+        $this->age = $age;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
     }
 
     public function getNationalId(): string

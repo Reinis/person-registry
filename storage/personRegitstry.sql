@@ -27,10 +27,12 @@ CREATE TABLE `people` (
   `firstName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Fnu',
   `lastName` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Lnu',
   `nationalId` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `age` int(11) NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
   `notes` text COLLATE utf8mb4_unicode_ci DEFAULT '',
   PRIMARY KEY (`id`),
   UNIQUE KEY `nid_idx` (`nationalId`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,7 +41,7 @@ CREATE TABLE `people` (
 
 LOCK TABLES `people` WRITE;
 /*!40000 ALTER TABLE `people` DISABLE KEYS */;
-INSERT INTO `people` VALUES (1,'John','Doe','123456-12345','');
+INSERT INTO `people` VALUES (1,'John','Doe','123456-12345',0,'','Some test text.'),(2,'Jane','Doe','123456-12346',0,'',''),(3,'','','123456-12347',0,'','notes');
 /*!40000 ALTER TABLE `people` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -52,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-03-28 20:21:08
+-- Dump completed on 2021-04-01  2:23:52

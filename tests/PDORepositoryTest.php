@@ -22,7 +22,7 @@ class PDORepositoryTest extends TestCase
 
     public function testCreatePerson(): Person
     {
-        $person = new Person('Jane', 'Doe', '123456-12346', 'note');
+        $person = new Person('Jane', 'Doe', '123456-12346', 0, '', 'note');
         $this->dataService->createPerson($person);
         $retrievedPerson = $this->dataService->getPersonByName('Jane', 'Doe');
 
@@ -152,7 +152,7 @@ class PDORepositoryTest extends TestCase
      */
     public function testSearchPersonByAll(): void
     {
-        $people = $this->dataService->searchByAll("46 no");
+        $people = $this->dataService->searchByAll("46 0  no");
 
         self::assertCount(1, $people);
         self::assertTrue($people->hasPerson('123456-12346'));
