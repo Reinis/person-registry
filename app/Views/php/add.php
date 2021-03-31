@@ -1,3 +1,4 @@
+<?php $title = 'Add New'; ?>
 <?php require_once __DIR__ . '/header.php'; ?>
 <div>
     <form action="/add" method="post">

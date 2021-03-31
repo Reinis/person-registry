@@ -1,5 +1,6 @@
+<?php $title = 'Person Registry'; ?>
 <?php require_once __DIR__ . '/header.php'; ?>
-    <h1>Person Registry</h1>
+    <h1>Person Registry from PHP</h1>
     <hr>
     <div>
         <div class="input-group">
