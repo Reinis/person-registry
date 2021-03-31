@@ -2,26 +2,24 @@
 
 {% block title %}Person Registry{% endblock %}
 
-{% block content %}
-    <h1>Person Registry</h1>
-    <hr>
-    <div>
-        <div class="input-group">
-            {% set searchField = searchField ?? 'name' %}
-            <form action="/search" method="post">
-                <select name="searchField">
-                    <option value="name"{% if searchField == 'name' %} selected{% endif %}>Name</option>
-                    <option value="nid"{% if searchField == 'nid' %} selected{% endif %}>National Id</option>
-                    <option value="notes"{% if searchField == 'notes' %} selected{% endif %}>Notes</option>
-                    <option value="all"{% if searchField == 'all' %} selected{% endif %}>All</option>
-                </select>
-                <input type="search" name="searchTerm" placeholder="Search">
-                <input type="submit" name="search" value="Search">
-            </form>
-        </div>
-        <a href="/add">
-            <button>Add New</button>
-        </a>
+{% block search %}
+    <div class="flex p-4 mb-4 justify-center">
+        {% set searchField = searchField ?? 'name' %}
+        <form action="/search" method="post" class="flex items-baseline rounded overflow-hidden">
+            <select name="searchField" class="flex p-2 pr-7 border-0 border-r bg-gray-300 hover:bg-gray-400">
+                <option value="name"{% if searchField == 'name' %} selected{% endif %}>Name</option>
+                <option value="nid"{% if searchField == 'nid' %} selected{% endif %}>National Id</option>
+                <option value="notes"{% if searchField == 'notes' %} selected{% endif %}>Notes</option>
+                <option value="all"{% if searchField == 'all' %} selected{% endif %}>All</option>
+            </select>
+            <input type="search" name="searchTerm" placeholder="Search" class="flex p-2 bg-gray-200 border-0">
+            <input type="submit" name="search" value="Search" class="flex p-2 bg-gray-700 text-gray-300">
+        </form>
+    </div>
+{% endblock %}
+
+{% block people %}
+    <div class="flex justify-center">
         <table>
             <tr>
                 <th>Id</th>
@@ -37,12 +35,12 @@
                     <td>{{ person.nationalId }}</td>
                     <td>{{ person.notes }}</td>
                     <td>
-                        <div class="btn-group">
+                        <div class="flex justify-around items-center">
                             <form action="/delete/{{ person.id }}" method="post">
-                                <input type="submit" value="Delete" class="button">
+                                <input type="submit" value="Delete" class="hover:bg-gray-500 w-24 text-red-600 border border-red-600 px-4 py-1 mx-1 rounded cursor-pointer">
                             </form>
                             <a href="/edit/{{ person.id }}">
-                                <button class="button">Edit</button>
+                                <button class="hover:bg-gray-600 text-green-400 border border-green-400 w-24 px-4 py-1 mx-1 rounded">Edit</button>
                             </a>
                         </div>
                     </td>

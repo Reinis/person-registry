@@ -3,23 +3,28 @@
 {% block title %}Edit{% endblock %}
 
 {% block content %}
-    <div>
-        <form action="/edit/{{ person.id }}" method="post">
-            <label for="fist_name">First Name:</label>
-            <input type="text" id="fist_name" value="{{ person.firstName }}" disabled>
-            <br>
-            <label for="last_name">Last Name:</label>
-            <input type="text" id="last_name" value="{{ person.lastName }}" disabled>
-            <br>
-            <label for="nid">National Id:</label>
-            <input type="text" id="nid" value="{{ person.nationalId }}" disabled>
-            <br>
-            <label for="notes">Notes:</label>
-            <input type="text" name="notes" id="notes" value="{{ person.notes }}">
-            <br>
-            <div class="btn-group">
-                <a href="/"><input type="button" class="button" value="Back"></a>
-                <input type="submit" class="button" value="Submit">
+    {{ parent() }}
+    <div class="flex justify-center">
+        <form action="/edit/{{ person.id }}" method="post" class="mb-4">
+            <div class="flex flex-col col-span-4 text-xl">
+                <label for="fist_name">First Name</label>
+                <input type="text" id="fist_name" class="rounded" value="{{ person.firstName }}" disabled>
+            </div>
+            <div class="flex flex-col col-span-4 text-xl">
+                <label for="last_name">Last Name</label>
+                <input type="text" id="last_name" class="rounded" value="{{ person.lastName }}" disabled>
+            </div>
+            <div class="flex flex-col col-span-4 text-xl">
+                <label for="nid">National Id</label>
+                <input type="text" id="nid" class="rounded" value="{{ person.nationalId }}" disabled>
+            </div>
+            <div class="flex flex-col col-span-4 text-xl">
+                <label for="notes">Notes</label>
+                <input type="text" name="notes" id="notes" class="rounded" value="{{ person.notes }}">
+            </div>
+            <div class="flex justify-between items-center mt-4">
+                <a href="/" class="w-24 px-4 py-1 rounded bg-green-400 text-center text-lg">Back</a>
+                <input type="submit" class="w-24 px-4 py-1 rounded bg-green-400 text-center font-bold text-lg cursor-pointer" value="Submit">
             </div>
         </form>
     </div>

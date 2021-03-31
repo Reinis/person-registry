@@ -13,33 +13,3 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
-
-form {
-    width: 80%;
-    margin: 0 auto;
-}
-
-label, input {
-    display: inline-block;
-}
-
-label {
-    width: 30%;
-    text-align: right;
-}
-
-label+input {
-    width: 30%;
-    margin: 0 30% 0 4%;
-}
-
-.button {
-    width: 100px;
-    text-align: center;
-}
-
-.btn-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
