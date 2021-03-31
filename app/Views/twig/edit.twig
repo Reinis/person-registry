@@ -1,0 +1,26 @@
+{% extends "base.twig" %}
+
+{% block title %}Edit{% endblock %}
+
+{% block content %}
+    <div>
+        <form action="/edit/{{ person.id }}" method="post">
+            <label for="fist_name">First Name:</label>
+            <input type="text" id="fist_name" value="{{ person.firstName }}" disabled>
+            <br>
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" value="{{ person.lastName }}" disabled>
+            <br>
+            <label for="nid">National Id:</label>
+            <input type="text" id="nid" value="{{ person.nationalId }}" disabled>
+            <br>
+            <label for="notes">Notes:</label>
+            <input type="text" name="notes" id="notes" value="{{ person.notes }}">
+            <br>
+            <div class="btn-group">
+                <a href="/"><input type="button" class="button" value="Back"></a>
+                <input type="submit" class="button" value="Submit">
+            </div>
+        </form>
+    </div>
+{% endblock %}

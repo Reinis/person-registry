@@ -1,0 +1,53 @@
+{% extends "base.twig" %}
+
+{% block title %}Person Registry{% endblock %}
+
+{% block content %}
+    <h1>Person Registry</h1>
+    <hr>
+    <div>
+        <div class="input-group">
+            {% set searchField = searchField ?? 'name' %}
+            <form action="/search" method="post">
+                <select name="searchField">
+                    <option value="name"{% if searchField == 'name' %} selected{% endif %}>Name</option>
+                    <option value="nid"{% if searchField == 'nid' %} selected{% endif %}>National Id</option>
+                    <option value="notes"{% if searchField == 'notes' %} selected{% endif %}>Notes</option>
+                    <option value="all"{% if searchField == 'all' %} selected{% endif %}>All</option>
+                </select>
+                <input type="search" name="searchTerm" placeholder="Search">
+                <input type="submit" name="search" value="Search">
+            </form>
+        </div>
+        <a href="/add">
+            <button>Add New</button>
+        </a>
+        <table>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>National Id</th>
+                <th>Notes</th>
+                <th>Action</th>
+            </tr>
+            {% for person in people %}
+                <tr>
+                    <td>{{ person.id }}</td>
+                    <td>{{ person.name }}</td>
+                    <td>{{ person.nationalId }}</td>
+                    <td>{{ person.notes }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <form action="/delete/{{ person.id }}" method="post">
+                                <input type="submit" value="Delete" class="button">
+                            </form>
+                            <a href="/edit/{{ person.id }}">
+                                <button class="button">Edit</button>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+{% endblock %}

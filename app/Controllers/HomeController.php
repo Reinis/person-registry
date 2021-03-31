@@ -4,30 +4,35 @@ namespace PersonRegistry\Controllers;
 
 use PersonRegistry\Entities\Person;
 use PersonRegistry\Services\PersonService;
+use PersonRegistry\Views\View;
 
 class HomeController
 {
     private PersonService $service;
+    private View $view;
 
-    public function __construct(PersonService $service)
+    public function __construct(PersonService $service, View $view)
     {
         $this->service = $service;
+        $this->view = $view;
     }
 
     public function index(): void
     {
-        $title = "Person Registry";
-        $people = $this->service->getPeople();
+        $context = [
+            'people' => $this->service->getPeople(),
+        ];
 
-        require_once __DIR__ . '/../Views/home.php';
+        echo $this->view->render('home', $context);
     }
 
     public function edit(array $vars): void
     {
-        $title = "Edit";
-        $person = $this->service->getPersonById($vars['id']);
+        $context = [
+            'person' => $this->service->getPersonById($vars['id']),
+        ];
 
-        require_once __DIR__ . '/../Views/edit.php';
+        echo $this->view->render('edit', $context);
     }
 
     public function update(array $vars): void
@@ -43,9 +48,7 @@ class HomeController
 
     public function addNew(): void
     {
-        $title = "Add New";
-
-        require_once __DIR__ . '/../Views/add.php';
+        echo $this->view->render('add');
     }
 
     public function create(array $vars): void
@@ -56,8 +59,11 @@ class HomeController
         $notes = $_POST['notes'] ?? '';
 
         if (!Person::isValidNationalId($nationalId)) {
-            $title = "Invalid person data";
-            require_once __DIR__ . '/../Views/error.php';
+            $context = [
+                'message' => 'Invalid person data',
+            ];
+
+            echo $this->view->render('error', $context);
             die();
         }
 
@@ -85,14 +91,19 @@ class HomeController
         }
 
         if (!in_array($searchField, ['name', 'nid', 'notes', 'all'])) {
-            $title = "Invalid search field";
-            require_once __DIR__ . '/../Views/error.php';
+            $context = [
+                'message' => 'Invalid search field',
+            ];
+
+            echo $this->view->render('error', $context);
             die();
         }
 
-        $title = "Person Registry";
-        $people = $this->service->searchForPeople($searchField, $searchTerm);
+        $context = [
+            'searchField' => $searchField,
+            'people' => $this->service->searchForPeople($searchField, $searchTerm),
+        ];
 
-        require_once __DIR__ . '/../Views/home.php';
+        echo $this->view->render('home', $context);
     }
 }

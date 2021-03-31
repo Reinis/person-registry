@@ -7,9 +7,13 @@ require_once '../vendor/autoload.php';
 use League\Container\Container;
 use PersonRegistry\Config;
 use PersonRegistry\Controllers\HomeController;
-use PersonRegistry\Repositories\PersonRepository;
 use PersonRegistry\Repositories\PDORepository;
+use PersonRegistry\Repositories\PersonRepository;
 use PersonRegistry\Services\PersonService;
+use PersonRegistry\Views\TwigView;
+use PersonRegistry\Views\View;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 
 $container = new Container();
@@ -17,10 +21,21 @@ $container = new Container();
 $container->add(Config::class, Config::class);
 $container->add(PersonRepository::class, PDORepository::class)
     ->addArgument(Config::class);
+$container->add(FilesystemLoader::class, FilesystemLoader::class)
+    ->addArgument(__DIR__ . '/../app/Views/twig');
+$container->add(Environment::class, Environment::class)
+    ->addArgument(FilesystemLoader::class)
+    ->addArgument([
+        'cache' => __DIR__ . '/../twig_cache',
+        'auto_reload' => true,
+    ]);
+$container->add(View::class, TwigView::class)
+    ->addArgument(Environment::class);
 $container->add(PersonService::class, PersonService::class)
     ->addArgument(PersonRepository::class);
 $container->add(HomeController::class, HomeController::class)
-    ->addArgument(PersonService::class);
+    ->addArgument(PersonService::class)
+    ->addArgument(View::class);
 
 
 $dispatcher = FastRoute\simpleDispatcher(
