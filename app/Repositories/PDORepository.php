@@ -205,4 +205,19 @@ class PDORepository implements PersonRepository
 
         return $this->searchForPeople($sql, $searchTerm);
     }
+
+    public function searchByAge(string $searchTerm): People
+    {
+        $sql = "select * from `people` where age = ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
+
+    public function searchByAddress(string $searchTerm): People
+    {
+        $searchTerm = "%{$searchTerm}%";
+        $sql = "select * from `people` where address like ?;";
+
+        return $this->searchForPeople($sql, $searchTerm);
+    }
 }

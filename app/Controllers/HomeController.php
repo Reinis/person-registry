@@ -56,6 +56,8 @@ class HomeController
         $firstName = $_POST['first_name'] ?? 'Fnu';
         $lastName = $_POST['last_name'] ?? 'Lnu';
         $nationalId = $_POST['nid'] ?? '';
+        $age = (int)($_POST['age'] ?? 0);
+        $address = $_POST['address'] ?? '';
         $notes = $_POST['notes'] ?? '';
 
         if (!Person::isValidNationalId($nationalId)) {
@@ -67,7 +69,7 @@ class HomeController
             die();
         }
 
-        $person = new Person($firstName, $lastName, $nationalId, $notes);
+        $person = new Person($firstName, $lastName, $nationalId, $age, $address, $notes);
         $this->service->createPerson($person);
 
         header('Location: /');
@@ -90,7 +92,7 @@ class HomeController
             header('Location: /');
         }
 
-        if (!in_array($searchField, ['name', 'nid', 'notes', 'all'])) {
+        if (!in_array($searchField, ['name', 'nid', 'notes', 'age', 'address', 'all'])) {
             $context = [
                 'message' => 'Invalid search field',
             ];

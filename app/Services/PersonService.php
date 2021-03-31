@@ -46,6 +46,12 @@ class PersonService
             case 'nid':
                 $people = $this->repository->searchByNID($searchTerm);
                 break;
+            case 'age':
+                $people = $this->repository->searchByAge($searchTerm);
+                break;
+            case 'address':
+                $people = $this->repository->searchByAddress($searchTerm);
+                break;
             case 'notes':
                 $people = $this->repository->searchByNotes($searchTerm);
                 break;

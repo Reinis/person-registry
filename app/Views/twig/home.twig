@@ -9,6 +9,8 @@
             <select name="searchField" class="flex p-2 pr-7 border-0 border-r bg-gray-300 hover:bg-gray-400">
                 <option value="name"{% if searchField == 'name' %} selected{% endif %}>Name</option>
                 <option value="nid"{% if searchField == 'nid' %} selected{% endif %}>National Id</option>
+                <option value="age"{% if searchField == 'age' %} selected{% endif %}>Age</option>
+                <option value="address"{% if searchField == 'address' %} selected{% endif %}>Address</option>
                 <option value="notes"{% if searchField == 'notes' %} selected{% endif %}>Notes</option>
                 <option value="all"{% if searchField == 'all' %} selected{% endif %}>All</option>
             </select>
@@ -25,6 +27,8 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>National Id</th>
+                <th>Age</th>
+                <th>Address</th>
                 <th>Notes</th>
                 <th>Action</th>
             </tr>
@@ -33,6 +37,8 @@
                     <td>{{ person.id }}</td>
                     <td>{{ person.name }}</td>
                     <td>{{ person.nationalId }}</td>
+                    <td>{{ person.age }}</td>
+                    <td>{{ person.address }}</td>
                     <td>{{ person.notes }}</td>
                     <td>
                         <div class="flex justify-around items-center">

@@ -28,4 +28,8 @@ interface PersonRepository
     public function searchByNotes(string $searchTerm): People;
 
     public function searchByAll(string $searchTerm): People;
+
+    public function searchByAge(string $searchTerm): People;
+
+    public function searchByAddress(string $searchTerm): People;
 }
