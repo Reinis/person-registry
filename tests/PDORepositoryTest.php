@@ -5,19 +5,19 @@ namespace PersonRegistryTest;
 use InvalidArgumentException;
 use PersonRegistry\Config;
 use PersonRegistry\Entities\Person;
-use PersonRegistry\Repositories\PDORepository;
+use PersonRegistry\Repositories\MySQLPersonRepository;
 use PHPUnit\Framework\TestCase;
 
 class PDORepositoryTest extends TestCase
 {
 
-    private PDORepository $dataService;
+    private MySQLPersonRepository $dataService;
 
     public function __construct(?string $name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
 
-        $this->dataService = new PDORepository(new Config(true));
+        $this->dataService = new MySQLPersonRepository(new Config(true));
     }
 
     public function testCreatePerson(): Person

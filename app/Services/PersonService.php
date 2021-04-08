@@ -25,6 +25,11 @@ class PersonService
         return $this->repository->getPersonById($id);
     }
 
+    public function getPersonByNationalId(string $nid): Person
+    {
+        return $this->repository->getPersonByNId($nid);
+    }
+
     public function updatePerson(Person $person): void
     {
         $this->repository->updatePerson($person);

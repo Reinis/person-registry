@@ -1,0 +1,21 @@
+{% extends "base.twig" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+    <div>
+        <div>
+            <span class="font-bold">Name: </span>
+            {{ person.name }}
+        </div>
+        <div>
+            <span class="font-bold">National Id:</span>
+            {{ person.nationalId }}
+        </div>
+        <br>
+        <div>
+            <a href="/logout" class="w-24 px-4 py-1 rounded bg-green-400 text-center text-lg">Logout</a>
+        </div>
+    </div>
+{% endblock %}

@@ -2,6 +2,8 @@
 
 namespace PersonRegistry\Repositories;
 
+use DateInterval;
+use DateTime;
 use InvalidArgumentException;
 use PDO;
 use PDOException;
@@ -9,7 +11,7 @@ use PersonRegistry\Config;
 use PersonRegistry\Entities\Collections\People;
 use PersonRegistry\Entities\Person;
 
-class PDORepository implements PersonRepository
+class MySQLPersonRepository implements PersonRepository
 {
     private PDO $connection;
 

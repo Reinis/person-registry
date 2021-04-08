@@ -7,22 +7,34 @@ require_once '../vendor/autoload.php';
 use League\Container\Container;
 use PersonRegistry\Config;
 use PersonRegistry\Controllers\HomeController;
-use PersonRegistry\Repositories\PDORepository;
+use PersonRegistry\Repositories\MySQLPersonRepository;
+use PersonRegistry\Repositories\MySQLTokenRepository;
 use PersonRegistry\Repositories\PersonRepository;
+use PersonRegistry\Repositories\TokenRepository;
 use PersonRegistry\Services\PersonService;
+use PersonRegistry\Services\TokenService;
 use PersonRegistry\Views\TwigView;
 use PersonRegistry\Views\View;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 
 
+session_start();
+
+
 $container = new Container();
 
 $container->add(Config::class, Config::class);
-$container->add(PersonRepository::class, PDORepository::class)
+$container->add(PersonRepository::class, MySQLPersonRepository::class)
     ->addArgument(Config::class);
 $container->add(PersonService::class, PersonService::class)
     ->addArgument(PersonRepository::class);
+
+$container->add(TokenRepository::class, MySQLTokenRepository::class)
+    ->addArgument(Config::class);
+$container->add(TokenService::class, TokenService::class)
+    ->addArgument(PersonRepository::class)
+    ->addArgument(TokenRepository::class);
 
 $container->add(FilesystemLoader::class, FilesystemLoader::class)
     ->addArgument(__DIR__ . '/../app/Views/twig');
@@ -33,12 +45,14 @@ $container->add(Environment::class, Environment::class)
             'cache' => __DIR__ . '/../twig_cache',
             'auto_reload' => true,
         ]
-    );
+    )
+    ->addMethodCall('addGlobal', ['session', $_SESSION]);
 $container->add(View::class, TwigView::class)
     ->addArgument(Environment::class);
 
 $container->add(HomeController::class, HomeController::class)
     ->addArgument(PersonService::class)
+    ->addArgument(TokenService::class)
     ->addArgument(View::class);
 
 
@@ -55,6 +69,15 @@ $dispatcher = FastRoute\simpleDispatcher(
         $r->addRoute('POST', '/delete/{id:\d+}', [HomeController::class, 'delete']);
 
         $r->addRoute(['GET', 'POST'], '/search', [HomeController::class, 'search']);
+
+        $r->addRoute('GET', '/login', [HomeController::class, 'login']);
+        $r->addRoute('POST', '/login', [HomeController::class, 'authenticate']);
+
+        $r->addRoute('GET', '/otp', [HomeController::class, 'loginWithToken']);
+
+        $r->addRoute('GET', '/dashboard', [HomeController::class, 'dashboard']);
+
+        $r->addRoute('GET', '/logout', [HomeController::class, 'logout']);
     }
 );
 
