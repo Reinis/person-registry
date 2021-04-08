@@ -44,6 +44,33 @@ LOCK TABLES `people` WRITE;
 INSERT INTO `people` VALUES (1,'John','Doe','123456-12345',0,'','Some test text.'),(2,'Jane','Doe','123456-12346',0,'',''),(3,'','','123456-12347',0,'','notes');
 /*!40000 ALTER TABLE `people` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Table structure for table `tokens`
+--
+
+DROP TABLE IF EXISTS `tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `tokens` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `nid` varchar(12) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration_time` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `token_idx` (`token`)
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tokens`
+--
+
+LOCK TABLES `tokens` WRITE;
+/*!40000 ALTER TABLE `tokens` DISABLE KEYS */;
+INSERT INTO `tokens` VALUES (14,'123456-12345','bb8ef3b79941b161a4100edf45c266135bdc7504','2021-04-08 13:39:57'),(15,'123456-12346','25a101f03723e83d622283eae751abde295b22be','2021-04-08 13:44:55');
+/*!40000 ALTER TABLE `tokens` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -54,4 +81,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-04-01  2:23:52
+-- Dump completed on 2021-04-08 16:46:14
