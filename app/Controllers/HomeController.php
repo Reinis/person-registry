@@ -143,16 +143,16 @@ class HomeController
 
     public function loginWithToken(): void
     {
-        $token = $_GET['token'] ?? 'none';
+        $tokenString = $_GET['token'] ?? 'none';
 
-        if ($token === 'none') {
+        if ($tokenString === 'none' || ($token = $this->tokenService->getToken($tokenString)) === null) {
             $message = "Invalid token";
 
             echo $this->view->render('error', compact('message'));
             die();
         }
 
-        $_SESSION['auth']['nid'] = $this->tokenService->getToken($token)->getNationalId();
+        $_SESSION['auth']['nid'] = $token->getNationalId();
 
         header('Location: /');
     }
