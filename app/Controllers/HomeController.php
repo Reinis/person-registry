@@ -23,20 +23,16 @@ class HomeController
 
     public function index(): void
     {
-        $context = [
-            'people' => $this->service->getPeople(),
-        ];
+        $people = $this->service->getPeople();
 
-        echo $this->view->render('home', $context);
+        echo $this->view->render('home', compact('people'));
     }
 
     public function edit(array $vars): void
     {
-        $context = [
-            'person' => $this->service->getPersonById($vars['id']),
-        ];
+        $person = $this->service->getPersonById($vars['id']);
 
-        echo $this->view->render('edit', $context);
+        echo $this->view->render('edit', compact('person'));
     }
 
     public function update(array $vars): void
@@ -65,11 +61,9 @@ class HomeController
         $notes = $_POST['notes'] ?? '';
 
         if (!Person::isValidNationalId($nationalId)) {
-            $context = [
-                'message' => 'Invalid person data',
-            ];
+            $message = 'Invalid person data';
 
-            echo $this->view->render('error', $context);
+            echo $this->view->render('error', compact('message'));
             die();
         }
 
@@ -97,20 +91,15 @@ class HomeController
         }
 
         if (!in_array($searchField, ['name', 'nid', 'notes', 'age', 'address', 'all'])) {
-            $context = [
-                'message' => 'Invalid search field',
-            ];
+            $message = 'Invalid search field';
 
-            echo $this->view->render('error', $context);
+            echo $this->view->render('error', compact('message'));
             die();
         }
 
-        $context = [
-            'searchField' => $searchField,
-            'people' => $this->service->searchForPeople($searchField, $searchTerm),
-        ];
+        $people = $this->service->searchForPeople($searchField, $searchTerm);
 
-        echo $this->view->render('home', $context);
+        echo $this->view->render('home', compact('searchField', 'people'));
     }
 
     public function login(): void
