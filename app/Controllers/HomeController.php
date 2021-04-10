@@ -141,7 +141,10 @@ class HomeController
             die();
         }
 
-        $_SESSION['auth']['nid'] = $token->getNationalId();
+        $nid = $token->getNationalId();
+
+        $_SESSION['auth']['nid'] = $nid;
+        $this->tokenService->deleteToken($nid);
 
         header('Location: /');
     }

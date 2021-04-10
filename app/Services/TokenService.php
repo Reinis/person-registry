@@ -55,4 +55,9 @@ class TokenService
 
         $this->tokenRepository->setToken(new Token($nid, $token, $expiration_time));
     }
+
+    public function deleteToken(string $nid): void
+    {
+        $this->tokenRepository->deleteToken($nid);
+    }
 }
