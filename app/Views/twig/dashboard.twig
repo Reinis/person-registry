@@ -4,18 +4,21 @@
 
 {% block content %}
     {{ parent() }}
-    <div>
-        <div>
-            <span class="font-bold">Name: </span>
-            {{ person.name }}
+    <div class="grid grid-cols-1 justify-items-center">
+        <div class="grid grid-cols-2 gap-2">
+            <span class="field">Name:</span>
+            <span class="field">{{ person.name }}</span>
+            <span class="field">National Id:</span>
+            <span class="field">{{ person.nationalId }}</span>
+            <span class="field">Age:</span>
+            <span class="field">{{ person.age }}</span>
+            <span class="field">Address:</span>
+            <span class="field">{{ person.address }}</span>
+            <span class="field">Notes:</span>
+            <span class="field">{{ person.notes }}</span>
         </div>
-        <div>
-            <span class="font-bold">National Id:</span>
-            {{ person.nationalId }}
-        </div>
-        <br>
-        <div>
-            <a href="/logout" class="w-24 px-4 py-1 rounded bg-green-400 text-center text-lg">Logout</a>
+        <div class="mt-6">
+            <a href="/logout" class="btn bg-green-400">Logout</a>
         </div>
     </div>
 {% endblock %}
