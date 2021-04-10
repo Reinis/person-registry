@@ -8,36 +8,36 @@ use PersonRegistry\Views\View;
 
 class HomeController
 {
-    private PersonService $service;
+    private PersonService $personService;
     private View $view;
 
     public function __construct(PersonService $personService, View $view)
     {
-        $this->service = $personService;
+        $this->personService = $personService;
         $this->view = $view;
     }
 
     public function index(): void
     {
-        $people = $this->service->getPeople();
+        $people = $this->personService->getPeople();
 
         echo $this->view->render('home', compact('people'));
     }
 
     public function edit(array $vars): void
     {
-        $person = $this->service->getPersonById($vars['id']);
+        $person = $this->personService->getPersonById($vars['id']);
 
         echo $this->view->render('edit', compact('person'));
     }
 
     public function update(array $vars): void
     {
-        $person = $this->service->getPersonById($vars['id']);
+        $person = $this->personService->getPersonById($vars['id']);
         $notes = $_POST['notes'] ?? '';
         $person->setNotes($notes);
 
-        $this->service->updatePerson($person);
+        $this->personService->updatePerson($person);
 
         header('Location: /');
     }
@@ -47,7 +47,7 @@ class HomeController
         echo $this->view->render('add');
     }
 
-    public function create(array $vars): void
+    public function create(): void
     {
         $firstName = $_POST['first_name'] ?? 'Fnu';
         $lastName = $_POST['last_name'] ?? 'Lnu';
@@ -64,15 +64,15 @@ class HomeController
         }
 
         $person = new Person($firstName, $lastName, $nationalId, $age, $address, $notes);
-        $this->service->createPerson($person);
+        $this->personService->createPerson($person);
 
         header('Location: /');
     }
 
     public function delete(array $args): void
     {
-        $person = $this->service->getPersonById($args['id']);
-        $this->service->deletePerson($person);
+        $person = $this->personService->getPersonById($args['id']);
+        $this->personService->deletePerson($person);
 
         header('Location: /');
     }
@@ -93,7 +93,7 @@ class HomeController
             die();
         }
 
-        $people = $this->service->searchForPeople($searchField, $searchTerm);
+        $people = $this->personService->searchForPeople($searchField, $searchTerm);
 
         echo $this->view->render('home', compact('searchField', 'people'));
     }
