@@ -7,6 +7,7 @@ require_once '../vendor/autoload.php';
 use League\Container\Container;
 use PersonRegistry\Config;
 use PersonRegistry\Controllers\HomeController;
+use PersonRegistry\Controllers\LoginController;
 use PersonRegistry\Repositories\MySQLPersonRepository;
 use PersonRegistry\Repositories\MySQLTokenRepository;
 use PersonRegistry\Repositories\PersonRepository;
@@ -52,6 +53,10 @@ $container->add(View::class, TwigView::class)
 
 $container->add(HomeController::class, HomeController::class)
     ->addArgument(PersonService::class)
+    ->addArgument(View::class);
+
+$container->add(LoginController::class, LoginController::class)
+    ->addArgument(PersonService::class)
     ->addArgument(TokenService::class)
     ->addArgument(View::class);
 
@@ -70,14 +75,14 @@ $dispatcher = FastRoute\simpleDispatcher(
 
         $r->addRoute(['GET', 'POST'], '/search', [HomeController::class, 'search']);
 
-        $r->addRoute('GET', '/login', [HomeController::class, 'login']);
-        $r->addRoute('POST', '/login', [HomeController::class, 'authenticate']);
+        $r->addRoute('GET', '/login', [LoginController::class, 'login']);
+        $r->addRoute('POST', '/login', [LoginController::class, 'authenticate']);
 
-        $r->addRoute('GET', '/otp', [HomeController::class, 'loginWithToken']);
+        $r->addRoute('GET', '/otp', [LoginController::class, 'loginWithToken']);
 
-        $r->addRoute('GET', '/dashboard', [HomeController::class, 'dashboard']);
+        $r->addRoute('GET', '/logout', [LoginController::class, 'logout']);
 
-        $r->addRoute('GET', '/logout', [HomeController::class, 'logout']);
+        $r->addRoute('GET', '/dashboard', [LoginController::class, 'dashboard']);
     }
 );
 
