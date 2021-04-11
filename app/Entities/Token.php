@@ -34,6 +34,11 @@ class Token
         return $this->token;
     }
 
+    public function isExpired(): bool
+    {
+        return $this->getExpirationTime() < new DateTime('now');
+    }
+
     public function getExpirationTime(): DateTime
     {
         return $this->expiration_time;

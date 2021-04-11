@@ -19,9 +19,19 @@ class TokenService
         $this->tokenRepository = $tokenRepository;
     }
 
-    public function getToken(string $token): Token
+    public function getToken(string $token): ?Token
     {
-        return $this->tokenRepository->getToken($token);
+        try {
+            $tokenObj = $this->tokenRepository->getToken($token);
+        } catch (InvalidArgumentException $e) {
+            return null;
+        }
+
+        if ($tokenObj->isExpired()) {
+            return null;
+        }
+
+        return $tokenObj;
     }
 
     public function getTokenByNationalId($nid): ?Token
@@ -33,7 +43,7 @@ class TokenService
             return null;
         }
 
-        if ($token->getExpirationTime() < new DateTime('now')) {
+        if ($token->isExpired()) {
             return null;
         }
 
