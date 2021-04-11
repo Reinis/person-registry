@@ -17,3 +17,7 @@
 .fields > * {
     @apply odd:font-bold odd:text-right
 }
+
+.inputs > input {
+    @apply rounded
+}
