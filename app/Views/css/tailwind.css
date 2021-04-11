@@ -6,12 +6,16 @@
     @apply w-24 px-4 py-1 rounded text-center text-lg cursor-pointer
 }
 
+.btn-gray {
+    @apply btn bg-gray-400
+}
+
 .btn-red {
-    @apply btn mx-1 hover:bg-gray-500 text-red-600 border border-red-600
+    @apply btn mx-1 bg-gray-100 hover:bg-gray-600 text-red-600 border border-red-600
 }
 
 .btn-green {
-    @apply btn mx-1 hover:bg-gray-600 text-green-400 border border-green-400
+    @apply btn mx-1 bg-gray-100 hover:bg-gray-600 text-green-400 border border-green-400
 }
 
 .fields > * {
