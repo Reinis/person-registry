@@ -5,17 +5,17 @@
 {% block content %}
     {{ parent() }}
     <div class="grid grid-cols-1 justify-items-center">
-        <div class="grid grid-cols-2 gap-2">
-            <span class="field">Name:</span>
-            <span class="field">{{ person.name }}</span>
-            <span class="field">National Id:</span>
-            <span class="field">{{ person.nationalId }}</span>
-            <span class="field">Age:</span>
-            <span class="field">{{ person.age }}</span>
-            <span class="field">Address:</span>
-            <span class="field">{{ person.address }}</span>
-            <span class="field">Notes:</span>
-            <span class="field">{{ person.notes }}</span>
+        <div class="grid grid-cols-2 gap-2 fields">
+            <span>Name:</span>
+            <span>{{ person.name }}</span>
+            <span>National Id:</span>
+            <span>{{ person.nationalId }}</span>
+            <span>Age:</span>
+            <span>{{ person.age }}</span>
+            <span>Address:</span>
+            <span>{{ person.address }}</span>
+            <span>Notes:</span>
+            <span>{{ person.notes }}</span>
         </div>
         <div class="mt-6">
             <a href="/logout" class="btn bg-green-400">Logout</a>
