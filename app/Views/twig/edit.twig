@@ -5,7 +5,7 @@
 {% block content %}
     {{ parent() }}
     <div class="flex justify-center">
-        <form action="/edit/{{ person.id }}" method="post" class="mb-4">
+        <form action="/edit/{{ person.id }}" method="post">
             <div class="flex flex-col col-span-4 text-xl">
                 <label for="fist_name">First Name</label>
                 <input type="text" id="fist_name" class="rounded" value="{{ person.firstName }}" disabled>

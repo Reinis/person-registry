@@ -16,13 +16,11 @@
     <div><!-- Content wrapper -->
         <div><!-- Nav wrapper -->
             <nav class="flex p-4 mb-4 bg-gray-400 items-center justify-between">
-                <div>
-                    <h1 class="text-4xl font-bold text-green-600">
-                        <a href="/">Person Registry</a>
-                    </h1>
+                <div class="text-4xl font-bold text-green-600">
+                    <a href="/">Person Registry</a>
                 </div>
                 <div>
-                    <div class="py-1 px-4 mr-8 inline text-xl font-bold text-green-700 underline">
+                    <div class="mr-8 inline text-xl font-bold text-green-700 underline">
                         {% if session.auth.nid %}
                             <a href="/dashboard">Dashboard</a>
                         {% else %}
