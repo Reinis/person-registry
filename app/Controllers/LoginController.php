@@ -6,6 +6,7 @@ use InvalidArgumentException;
 use PersonRegistry\Services\PersonService;
 use PersonRegistry\Services\TokenService;
 use PersonRegistry\Views\View;
+use RuntimeException;
 
 class LoginController
 {
@@ -34,6 +35,10 @@ class LoginController
             $this->tokenService->setToken($nid);
         } catch (InvalidArgumentException $e) {
             $failed = true;
+        } catch (RuntimeException $e) {
+            $message = "Failed to generate the token";
+            echo $this->view->render('error', compact('message'));
+            die();
         }
 
         if ($nid === 'none' || $failed) {

@@ -3,10 +3,12 @@
 namespace PersonRegistry\Services;
 
 use DateTime;
+use Exception;
 use InvalidArgumentException;
 use PersonRegistry\Entities\Token;
 use PersonRegistry\Repositories\PersonRepository;
 use PersonRegistry\Repositories\TokenRepository;
+use RuntimeException;
 
 class TokenService
 {
@@ -60,7 +62,11 @@ class TokenService
         $this->tokenRepository->deleteToken($nid);
 
         $time = new DateTime();
-        $token = sha1($nid . $time->format('Y-m-d H:i:s P'));
+        try {
+            $token = sha1($nid . $time->format('Y-m-d H:i:s P') . random_bytes(16));
+        } catch (Exception $e) {
+            throw new RuntimeException("Failed to generate a token");
+        }
         $expiration_time = $time->modify('+15min');
 
         $this->tokenRepository->setToken(new Token($nid, $token, $expiration_time));
