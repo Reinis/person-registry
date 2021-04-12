@@ -2,8 +2,6 @@
 
 namespace PersonRegistry\Repositories;
 
-use DateInterval;
-use DateTime;
 use InvalidArgumentException;
 use PDO;
 use PDOException;

@@ -21,7 +21,7 @@
     </div>
     {% if token %}
         <div class="flex justify-center mt-8">
-            <a href="/otp?token={{ token.token }}">Authenticate with National Id {{ token.nid }}</a>
+            <a href="/otp?token={{ token.token }}">Authenticate with National Id {{ token.nationalId }}</a>
         </div>
     {% endif %}
 {% endblock %}
