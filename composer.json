@@ -15,7 +15,10 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-latest",
-    "phpunit/phpunit": "^9"
+    "phpunit/phpunit": "^9",
+    "codeception/codeception": "^4.1",
+    "codeception/module-phpbrowser": "^1.0.0",
+    "codeception/module-asserts": "^1.0.0"
   },
   "require": {
     "ext-pdo": "*",

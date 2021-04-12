@@ -1,6 +1,6 @@
 <?php
 
-namespace PersonRegistryTest;
+namespace PersonRegistryTest\unit;
 
 use InvalidArgumentException;
 use PersonRegistry\Entities\Collections\People;
