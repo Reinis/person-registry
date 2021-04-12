@@ -8,7 +8,7 @@ use PersonRegistry\Entities\Person;
 use PersonRegistry\Repositories\MySQLPersonRepository;
 use PHPUnit\Framework\TestCase;
 
-class PDORepositoryTest extends TestCase
+class MySQLRepositoryTest extends TestCase
 {
 
     private MySQLPersonRepository $dataService;
