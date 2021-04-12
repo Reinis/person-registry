@@ -74,6 +74,10 @@ class LoginController
 
     public function logout(): void
     {
+        if (ini_get("session.use_cookies")) {
+            setcookie(session_name(), '', session_get_cookie_params());
+        }
+
         session_destroy();
 
         header('Location: /');
