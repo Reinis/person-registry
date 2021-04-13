@@ -65,7 +65,7 @@ class TokenCest
             [
                 'nid' => '123456-12345',
                 'token' => 'abc',
-                'expiration_time' => (new DateTime('1 min ago'))->format('Y-m-d H:i:s')
+                'expiration_time' => (new DateTime('1 min ago'))->format('Y-m-d H:i:s'),
             ]
         );
 
@@ -85,7 +85,7 @@ class TokenCest
             [
                 'nid' => '123456-12345',
                 'token' => 'abc',
-                'expiration_time' => (new DateTime('+15 min'))->format('Y-m-d H:i:s')
+                'expiration_time' => (new DateTime('+15 min'))->format('Y-m-d H:i:s'),
             ]
         );
 
@@ -120,7 +120,14 @@ class TokenCest
         $I->fillField('nid', '123456-12345');
         $I->click('Login');
 
-        $I->expectTo("have login link with a token generated");
+        $I->expectTo("have login link with the generated token");
+        $I->seeInDatabase(
+            'tokens',
+            [
+                'nid' => '123456-12345',
+                'expiration_time >' => (new DateTime('now'))->format('Y-m-d H:i:s'),
+            ]
+        );
         $I->seeCurrentUrlEquals('/login');
         $I->seeLink('Authenticate with National Id 123456-12345');
 
