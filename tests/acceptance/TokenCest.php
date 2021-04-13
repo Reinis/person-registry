@@ -6,7 +6,7 @@ use AcceptanceTester;
 
 class TokenCest
 {
-    public function tryToGoToTheDashboardTest(AcceptanceTester $I): void
+    public function failToGoToTheDashboardWithoutLogin(AcceptanceTester $I): void
     {
         $I->amOnPage('/');
 
@@ -17,7 +17,7 @@ class TokenCest
         $I->seeCurrentUrlEquals('/login');
     }
 
-    public function tryToLoginWithAnEmptyNationalIdTest(AcceptanceTester $I): void
+    public function failToGetATokenForAnEmptyNationalId(AcceptanceTester $I): void
     {
         $I->amOnPage('/login');
 
@@ -29,7 +29,7 @@ class TokenCest
         $I->see('Unknown user');
     }
 
-    public function tryToLoginWithAnInvalidNationalIdTest(AcceptanceTester $I): void
+    public function failToGetATokenForAnInvalidNationalId(AcceptanceTester $I): void
     {
         $I->amOnPage('/login');
 
@@ -42,7 +42,7 @@ class TokenCest
         $I->see('Unknown user');
     }
 
-    public function tryToLoginWithANonexistentNationalIdTest(AcceptanceTester $I): void
+    public function failToGetATokenForANonexistentNationalId(AcceptanceTester $I): void
     {
         $I->amOnPage('/login');
 
@@ -55,7 +55,7 @@ class TokenCest
         $I->see('Unknown user');
     }
 
-    public function loginWithATokenTest(AcceptanceTester $I): void
+    public function loginWithAToken(AcceptanceTester $I): void
     {
         $I->amOnPage('/');
         $I->seeNumRecords(0, 'people');
