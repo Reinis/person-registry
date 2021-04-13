@@ -58,23 +58,20 @@ class TokenCest
     public function loginWithATokenTest(AcceptanceTester $I): void
     {
         $I->amOnPage('/');
-
-        $I->amGoingTo("add a person to the database");
-        $I->click('Add');
-        $I->seeCurrentUrlEquals('/add');
-        $I->fillField('first_name', 'John');
-        $I->fillField('last_name', 'Doe');
-        $I->fillField('nid', '123456-12345');
-        $I->fillField('age', 99);
-        $I->click('Submit');
-
-        $I->expectTo("return to the main page with a new user added");
-        $I->seeCurrentUrlEquals('/');
-        $I->seeInTitle('Person Registry');
-        $I->see('John');
-        $I->see('Log In');
+        $I->seeNumRecords(0, 'people');
+        $I->haveInDatabase(
+            'people',
+            [
+                'firstName' => 'John',
+                'lastName' => 'Doe',
+                'nationalId' => '123456-12345',
+                'age' => 99,
+            ]
+        );
+        $I->seeNumRecords(1, 'people');
 
         $I->amGoingTo("generate a login token");
+        $I->see('Log In');
         $I->click('Log In');
         $I->seeCurrentUrlEquals('/login');
         $I->fillField('nid', '123456-12345');
@@ -110,11 +107,5 @@ class TokenCest
         $I->dontSeeLink('Dashboard');
         $I->seeLink('Log In');
         $I->assertNotEquals($sessionId, $I->grabCookie('PHPSESSID'));
-
-        $I->amGoingTo("remove a person from the data base");
-        $I->click('Delete');
-
-        $I->expectTo("not find John");
-        $I->dontSee('John');
     }
 }
