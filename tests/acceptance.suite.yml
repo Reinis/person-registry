@@ -9,6 +9,10 @@ modules:
     enabled:
         - PhpBrowser:
             url: http://localhost:8001
+        - Db:
+            dsn: "%PERSON_REGISTRY_DB_DSN_TEST%"
+            user: "%PERSON_REGISTRY_DB_USER_TEST%"
+            password: "%PERSON_REGISTRY_DB_PASSWORD_TEST%"
         - Asserts
         - \Helper\Acceptance
 step_decorators: ~        
