@@ -3,6 +3,7 @@
 namespace PersonRegistryTest\acceptance;
 
 use AcceptanceTester;
+use DateTime;
 
 class TokenCest
 {
@@ -53,6 +54,48 @@ class TokenCest
         $I->expectTo("see error page");
         $I->seeInTitle('Error');
         $I->see('Unknown user');
+    }
+
+    public function failToLoginWithAnExpiredToken(AcceptanceTester $I): void
+    {
+        $I->amOnPage('/login');
+        $I->haveInDatabase('people', ['nationalId' => '123456-12345', 'age' => 99]);
+        $I->haveInDatabase(
+            'tokens',
+            [
+                'nid' => '123456-12345',
+                'token' => 'abc',
+                'expiration_time' => (new DateTime('1 min ago'))->format('Y-m-d H:i:s')
+            ]
+        );
+
+        $I->amGoingTo("login with an outdated token");
+        $I->amOnPage('/otp?token=abc');
+
+        $I->expectTo("fail");
+        $I->seeInTitle('Error');
+        $I->see('Invalid token');
+    }
+
+    public function succeedToLoginWithAValidToken(AcceptanceTester $I): void
+    {
+        $I->haveInDatabase('people', ['nationalId' => '123456-12345', 'age' => 99]);
+        $I->haveInDatabase(
+            'tokens',
+            [
+                'nid' => '123456-12345',
+                'token' => 'abc',
+                'expiration_time' => (new DateTime('+15 min'))->format('Y-m-d H:i:s')
+            ]
+        );
+
+        $I->amGoingTo("login with a token");
+        $I->amOnPage('/otp?token=abc');
+
+        $I->expectTo("succeed");
+        $I->seeLink('Dashboard');
+        $I->click('Dashboard');
+        $I->see('123456-12345');
     }
 
     public function loginWithAToken(AcceptanceTester $I): void
